@@ -116,7 +116,7 @@ void UPhysicsWeaponComponent::ApplyDamage(const FHitResult& _oHit, AActor* _pAct
 		{
 			case EImpulseType::Linear:
 				{
-					UGameplayStatics::ApplyPointDamage(_oHit.GetActor(), m_WeaponDamageType->m_fDamage, _oHit.ImpactNormal.BackwardVector, _oHit, Character->GetController(), _pActor, m_WeaponDamageType->m_oDamageTypeClass);
+					UGameplayStatics::ApplyPointDamage(_oHit.GetActor(), m_WeaponDamageType->m_fDamage, -_oHit.ImpactNormal, _oHit, Character->GetController(), _pActor, m_WeaponDamageType->m_oDamageTypeClass);
 				}
 				break;
 			case EImpulseType::Radial:
