@@ -74,13 +74,13 @@ void APhysicsCharacter::Tick(float DeltaSeconds)
 	FVector vCameraForward = FirstPersonCameraComponent->GetForwardVector();
 	FVector vRayStart = GetActorLocation() + FirstPersonCameraComponent->GetRelativeLocation();
 	FVector vRayEnd = vRayStart + (vCameraForward * m_MaxGrabDistance);
-	UStaticMeshComponent* pHitMesh = nullptr;
+	UMeshComponent* pHitMesh = nullptr;
 	if (GetWorld()->LineTraceSingleByChannel(outHit, vRayStart, vRayEnd, ECC_Visibility))
 	{
 		UPrimitiveComponent* pHitComponent = outHit.GetComponent();
 		if ((pHitComponent != nullptr) && (pHitComponent->Mobility == EComponentMobility::Movable))
 		{
-			pHitMesh = Cast<UStaticMeshComponent>(pHitComponent);
+			pHitMesh = Cast<UMeshComponent>(pHitComponent);
 		}
 	}
 	SetHighlightedMesh(pHitMesh);
@@ -199,7 +199,6 @@ void APhysicsCharacter::GrabObject(const FInputActionValue& Value)
 				if (outHit.GetActor()->ActorHasTag(TEXT("Door")))
 				{
 					m_PhysicsHandle->GrabComponentAtLocation(pHitComponent, outHit.BoneName, outHit.Location);
-
 				}
 				else
 				{
