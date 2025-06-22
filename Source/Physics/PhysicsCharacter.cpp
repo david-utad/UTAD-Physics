@@ -78,7 +78,7 @@ void APhysicsCharacter::Tick(float DeltaSeconds)
 	if (GetWorld()->LineTraceSingleByChannel(outHit, vRayStart, vRayEnd, ECC_Visibility))
 	{
 		UPrimitiveComponent* pHitComponent = outHit.GetComponent();
-		if ((pHitComponent != nullptr) && (pHitComponent->Mobility == EComponentMobility::Movable))
+		if ((pHitComponent != nullptr) && (pHitComponent->Mobility == EComponentMobility::Movable) && (pHitComponent->IsSimulatingPhysics()))
 		{
 			pHitMesh = Cast<UMeshComponent>(pHitComponent);
 		}
