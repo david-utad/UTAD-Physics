@@ -1,6 +1,8 @@
 #include "BreakableTarget.h"
 #include <GeometryCollection/GeometryCollectionComponent.h>
 
+FTargetBroken ABreakableTarget::OnTargetBroken;
+
 // Sets default values
 ABreakableTarget::ABreakableTarget()
 {
@@ -12,11 +14,28 @@ ABreakableTarget::ABreakableTarget()
 
 	GeometryCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("GeometryCollection"));
 	GeometryCollection->SetupAttachment(StaticMesh);
+  GeometryCollection->OnChaosBreakEvent.AddDynamic(this, &ABreakableTarget::GeometryCollectionBroken);
+  GeometryCollection->SetNotifyBreaks(true);
+}
 
+void ABreakableTarget::BeginPlay()
+{
+  Super::BeginPlay();
+}
+
+void ABreakableTarget::Tick(float DeltaTime)
+{
+  Super::Tick(DeltaTime);
 }
 
 void ABreakableTarget::GeometryCollectionBroken(const FChaosBreakEvent& BreakEvent)
 {
 	// @TODO: Call this function when the geometry collection breaks
+  if (!m_IsBroken)
+  {
+    m_IsBroken = true;
+    OnTargetBroken.Broadcast(this);
+    GeometryCollection->SetNotifyBreaks(false);
+  }
 }
 

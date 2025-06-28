@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "BreakableTarget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetBroken, ABreakableTarget*, _pTarget);
+
 UCLASS()
 class PHYSICS_API ABreakableTarget : public AActor
 {
@@ -21,7 +23,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true"))
 	bool m_IsBroken = false;
 
-public:	
-	UFUNCTION()
-	void GeometryCollectionBroken(const struct FChaosBreakEvent& BreakEvent);
+  static FTargetBroken OnTargetBroken;
+
+protected:
+
+  virtual void BeginPlay() override;
+
+  virtual void Tick(float DeltaTime) override;
+
+  UFUNCTION()
+  void GeometryCollectionBroken(const struct FChaosBreakEvent& BreakEvent);
 };
